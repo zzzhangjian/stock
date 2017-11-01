@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>股票信息录入</title>
+</head>
+<body>
+	<form action="/stock/import" method="post">
+		<table>
+			<tr>
+				<th>属性名</th>
+				<th>属性值</th>
+			</tr>
+			<tr>
+				<td>股票代码：</td>
+				<td><input type="text" name="code"></td>
+			</tr>
+			<tr>
+				<td>股票类型:</td>
+				<td>
+					<input type="radio" name="pre" value="1">深市&nbsp;&nbsp;
+					<input type="radio" name="pre" value="0">沪市
+				</td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="提交"></td>
+				<td><input type="reset" value="重置"></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

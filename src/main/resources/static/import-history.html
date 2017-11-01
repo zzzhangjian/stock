@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>股票信息录入</title>
+</head>
+<body>
+	<form action="/stock/history" method="post">
+		<table>
+			<tr>
+				<th colspan="2">属性名</th>
+				<th colspan="2">属性值</th>
+			</tr>
+			<tr>
+				<td>代码：</td>
+				<td><input type="text" name="symbol"></td>
+				<td>全部</td>
+				<td><input type="checkbox" name="symbolAll" value="all" ></td>
+			</tr>
+			<tr>
+				<td>
+					开始：
+				</td>
+				<td><input type="text" name="startYear"></td>
+				<td>
+					结束:
+				</td>
+				<td><input type="text" name="endYear"></td>
+			</tr>
+			<tr>
+				<td>季度:</td>
+				<td colspan="3">
+					1 <input type="checkbox" name="season" value="1">
+					2 <input type="checkbox" name="season" value="2">
+					3 <input type="checkbox" name="season" value="3">
+					4 <input type="checkbox" name="season" value="4">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="submit" value="提交"></td>
+				<td colspan="2"><input type="reset" value="重置"></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>股票信息录入</title>
+</head>
+<body>
+	<form action="/stock/save" method="post">
+		<table>
+			<tr>
+				<th>属性名</th>
+				<th>属性值</th>
+			</tr>
+			<tr>
+				<td>股票代码：</td>
+				<td><input type="text" name="code"></td>
+			</tr>
+			<tr>
+				<td>股票简称：</td>
+				<td><input type="text" name="shortName"></td>
+			</tr>
+			<tr>
+				<td>股票名称：</td>
+				<td><input type="text" name="fullName"></td>
+			</tr>
+			<tr>
+				<td>股票类型：</td>
+				<td><input type="radio" name="type" value="创业板">创业板 &nbsp;&nbsp;
+					<input type="radio" name="type" value="沪市">沪市 &nbsp;&nbsp; 
+					<input type="radio" name="type" value="深市">深市</td>
+			</tr>
+			<tr>
+				<td>股票状态：</td>
+				<td><input type="radio" name="status" value="0">停牌 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="status" value="1">正常 
+				</td>
+			</tr>
+			<tr>
+				<td>股票振幅：</td>
+				<td><input type="text" name="amplitude"></td>
+			</tr>
+			<tr>
+				<td>股票时间：</td>
+				<td><input type="text" name="date"></td>
+			</tr>
+			<tr>
+				<td>股票开盘价：</td>
+				<td><input type="text" name="openPrice"></td>
+			</tr>
+			<tr>
+				<td>股票收盘价：</td>
+				<td><input type="text" name="closePrice"></td>
+			</tr>
+			<tr>
+				<td>股票最高价：</td>
+				<td><input type="text" name="highPrice"></td>
+			</tr>
+			<tr>
+				<td>股票最低价：</td>
+				<td><input type="text" name="lowPrice"></td>
+			</tr>
+			<tr>
+				<td>股票成交量：</td>
+				<td><input type="text" name="volume"></td>
+			</tr>
+			<tr>
+				<td>股票成交量：</td>
+				<td><input type="text" name="volAmount"></td>
+			</tr>
+			<tr>
+				<td>股票换手率：</td>
+				<td><input type="text" name="turnoverRate"></td>
+			</tr>
+			<tr>
+				<td>股票流通股：</td>
+				<td><input type="text" name="floatingStock"></td>
+			</tr>
+			<tr>
+				<td>股票限售股：</td>
+				<td><input type="text" name="limitStock"></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="提交"></td>
+				<td><input type="reset" value="重置"></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
