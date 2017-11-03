@@ -1,9 +1,10 @@
 package cn.irss.stock.controller;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,21 +84,41 @@ public class StockController extends BaseController {
 		return JsonResult.setOk("save success", "invoke success");
 	}
 	
-	private void batchImportStockDay(int thread) {
-		List<Stock> allStock = stockRepository.findAll();
-		ExecutorService exec = Executors.newFixedThreadPool(thread);
-		for (Stock stock : allStock) {
-			for (int y = 1990;y <= 2017;y++) {
-				for (int s = 1;s <= 4;s++) {
-					exec.execute(new StockDayThread(stock.getSymbol(), new StockDataParseByDayImpl(""+y,""+s,stock.getSymbol()), stockDayRepository));
+	@RequestMapping(value = "/import",method=RequestMethod.POST)
+	public JsonResult importStock(String pre,String code ) {
+		//线程池
+		//读取文件
+		BufferedReader bufferedReader = null;
+		try {
+			bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("d:/stock.txt")),1024*1024*10);
+			List<String> list = new ArrayList<>(1000);
+			String line;
+			while((line =bufferedReader.readLine())!=null) {
+				list.add(line);
+			}
+			bufferedReader.close();
+			System.out.println("list : 完成"+list.size());
+			
+			ExecutorService exec = Executors.newFixedThreadPool(100);
+			for (String tmp : list) {
+				exec.execute(new StockThread(tmp, new StockDataParseImpl(tmp.substring(0, 1),tmp.substring(1)), stockRepository));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(bufferedReader!=null) {
+				try {
+					bufferedReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
+			bufferedReader=null;
 		}
-	}
-	
-	
-	@RequestMapping(value = "/import",method=RequestMethod.POST)
-	public JsonResult importStock(@Param("pre")String pre,@Param("code")String code ) {
+		
+		
+		
 		//异步处理
 		/*for(int i=0;i<9999;i++) {
 			String[] preCode = new String[] {"00","30","60"};
@@ -186,48 +206,18 @@ public class StockController extends BaseController {
 		//disruptor
 		//run();
 		
-		//线程池
-		//读取文件
-		BufferedReader bufferedReader = null;
-		try {
-			/*bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("d:/stock.txt")),1024*1024*10);
-			List<String> list = new ArrayList<>(1000);
-			String line;
-			while((line =bufferedReader.readLine())!=null) {
-				list.add(line);
-			}*/
-			List<String> list = new ArrayList<>(1000);
-			for(int i=0;i<9999;i++) {
-				String[] preCode = new String[] {"00","30","60"};
-				for (String pc : preCode) {
-					String[] preSymbol = new String[] {"0","1"};
-					for (String ps : preSymbol) {
-						String symbol = ps + pc + String.format("%04d", i);
-						list.add(symbol);
-					}
+		//自动生成 symbol
+		/*List<String> list = new ArrayList<>(1000);
+		for(int i=0;i<9999;i++) {
+			String[] preCode = new String[] {"00","30","60"};
+			for (String pc : preCode) {
+				String[] preSymbol = new String[] {"0","1"};
+				for (String ps : preSymbol) {
+					String symbol = ps + pc + String.format("%04d", i);
+					list.add(symbol);
 				}
 			}
-			System.out.println("list : 完成"+list.size());
-			
-			ExecutorService exec = Executors.newFixedThreadPool(100);
-			for (String tmp : list) {
-				exec.execute(new StockThread(tmp, new StockDataParseImpl(tmp.substring(0, 1),tmp.substring(1)), stockRepository));
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			if(bufferedReader!=null) {
-				try {
-					bufferedReader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			bufferedReader=null;
-		}
-		
-		
+		}*/
 		return JsonResult.setOk("import success", "invoke success");
 	}
 	
@@ -262,5 +252,18 @@ public class StockController extends BaseController {
 		disruptor.shutdown();
 		executor.shutdown();
 	}
+	
+	/*private void batchImportStockDay(int thread) {
+	List<Stock> allStock = stockRepository.findAll();
+	ExecutorService exec = Executors.newFixedThreadPool(thread);
+	for (Stock stock : allStock) {
+		for (int y = 1990;y <= 2017;y++) {
+			for (int s = 1;s <= 4;s++) {
+				exec.execute(new StockDayThread(stock.getSymbol(), new StockDataParseByDayImpl(""+y,""+s,stock.getSymbol()), stockDayRepository));
+			}
+		}
+	}
+	}
+	 */
 
 }
