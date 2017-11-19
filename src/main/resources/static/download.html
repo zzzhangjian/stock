@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>股票信息录入</title>
+<script type="text/javascript" src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/js/lib/jquery-1.10.2_d88366fd.js"></script>
+<script type="text/javascript">
+		function download(){
+			$.ajax({
+			    url:'/download/checkInfo.do?id='+ 10,
+			    success:function(data){
+			      console.log(data);
+			      if(data){
+			    	  result = data;
+			    	 console.log("下载开始");
+			    	 window.location.href ='/download/demo.do?id='+'10';
+			      }
+			    }
+			});
+		}
+		function checkInfo(){
+			var query = "10";
+			$("#checkInfo").attr("disabled","disabled");
+			$("#progress").prepend("<progress></progress>");
+			var id = 0;
+			var load =setInterval(function(){
+					$.ajax({
+					    url:'/download/checkInfo.do?id='+query,
+					    success:function(data){
+					      if(data){
+					    	 window.location.href ='/download/demo.do?id='+query;
+					    	 clearInterval(load);
+					    	 $("#progress").empty();
+					    		$("#checkInfo").removeAttr("disabled");
+					      }
+					    }
+					});
+					++id;
+					if(id>15){
+						clearInterval(load);
+						alert("请求超时，请重试！");
+					}
+					console.log(id);
+			}, 1000);
+		}
+	</script>
+</head>
+<body>
+	
+	<div id="progress"></div>
+	<button id="checkInfo" onclick="checkInfo()" >导出</button> 
+	<button onclick="download()">测试</button> 
+	
+	
+</body>
+</html>
