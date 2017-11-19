@@ -30,7 +30,7 @@ public class StockSyncTask {
 	//全量同步
 	@SuppressWarnings("deprecation")
 //	@Scheduled(cron="0 0/5 * * * ?")
-	@Scheduled(cron="${stock-allsync-cron}")
+  //@Scheduled(cron="${stock-allsync-cron}")
 	public void allSync() {
 		logger.info("开始同步数据。。。");
 		Long count = stockRepository.count();
